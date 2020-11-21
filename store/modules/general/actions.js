@@ -22,10 +22,10 @@ export default {
       })
       .then(user => {
         commit('setUser', user)
-        return resolve(user)
+        resolve(user)
       })
       .catch(error => {
-        return reject(error.response.data)
+        reject(error.response.data)
       })
     })
   },
@@ -37,26 +37,25 @@ export default {
     this.$router.push('/')
   },
 
+  // ACTION FUNCTION TO CALL setPageTitle MUTATION FROM PAGES
+  setPageTitle ({ commit }, payload) {
+    commit('setPageTitle', payload)
+  },
+
   // CHECK IF USER'S TOKEN IS STILL VALID
-  getUser ({ commit, dispatch }, payload) {
-    if (!this.$auth.$state['token.local']) {
-      dispatch('logout')
-      return
-    }
-    return new Promise((resolve, reject) => {
-      this.$axios.$get('http://localhost:8080/users/user', {
+  async getUser ({ commit, dispatch }, payload) {
+    if (this.$auth.$state['token.local']) {
+      let response = await this.$axios.$get('http://localhost:8080/users/user', {
         headers: {
           'Authorization': `${this.$auth.$state['token.local']}`
         }
       })
       .then(response => {
         commit('setUser', response)
-        return resolve(response)
       })
       .catch(error => {
         dispatch('logout')
-        return reject()
       })
-    })
+    }
   }
 }

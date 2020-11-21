@@ -1,7 +1,7 @@
 <template>
   <v-row>
-    <v-col>
-      <v-card>
+    <v-col col="4" class="text-center">
+      <v-card class="customCard">
         <v-container>
           <v-row>
             <v-col>
@@ -22,16 +22,30 @@
         </v-container>
       </v-card>
     </v-col>
+    <v-col col="6">
+      <v-card>
+
+      </v-card>
+    </v-col>
   </v-row>
 </template>
 
 <script>
 export default {
+  head () {
+    return {
+      title: `${this.user && this.user.firstName} | Profile`
+    }
+  },
   middleware: 'userExists',
   data () {
     return {
       message: 'Login Page'
     }
+  },
+  beforeMount () {
+    // SETTING PAGE TITLE
+    this.$store.dispatch('setPageTitle', `<b>${this.user.firstName}</b> Profile`)
   },
   computed: {
     user () {

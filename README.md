@@ -1,4 +1,7 @@
-# teamC
+# Welcome to Team C project
+this project was written with [Nuxt.js](https://nuxtjs.org),
+Nuxt js is a SSR version of Vue.js
+[Vuetify.js](https://vuetifyjs.com/) was used as a front-end framework
 
 ## Build Setup
 
@@ -16,5 +19,3 @@ $ npm run start
 # generate static project
 $ npm run generate
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

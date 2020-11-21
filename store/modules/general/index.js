@@ -7,7 +7,8 @@ const defaultState = {
 }
 
 const state = () => ({
-  user: null
+  user: null,
+  pageTitle: null
 })
 
 const inBrowser = typeof window !== 'undefined'

@@ -4,7 +4,7 @@
       fixed
       app
     >
-      <v-toolbar-title v-text="`Sign In Page`" />
+      <v-toolbar-title v-html="pageTitle" />
       <v-spacer />
       <v-btn @click="$store.dispatch('logout')" v-if="user" text>Log Out</v-btn>
     </v-app-bar>
@@ -25,6 +25,9 @@ export default {
   computed: {
     user () {
       return this.$store.state.general.user
+    },
+    pageTitle () {
+      return this.$store.state.general.pageTitle
     }
   }
 }

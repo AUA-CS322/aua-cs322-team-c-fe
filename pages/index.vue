@@ -56,6 +56,12 @@
 
 <script>
 export default {
+  head () {
+    return {
+      title: `Login`
+    }
+  },
+  // MIDDLEWATE CHECKING IF THERE IS A LOGGED IN USER REDIRECTS TO /PROFILE PAGE
   middleware: 'loginCheck',
   data () {
     return {
@@ -66,18 +72,13 @@ export default {
       error: null
     }
   },
+  // BEFOREMOUNT WORKS BEFORE THE PAGE IS MOUNTED
   beforeMount () {
-    this.$store.dispatch('getUser')
+    // SETTING PAGE TITLE
+    this.$store.dispatch('setPageTitle', 'Login Page')
   },
   methods: {
     onLogin () {
-      // if (this.password.length < 8) {
-      //   this.showBanner = true
-      //   this.error = {
-      //     message: 'Password should be at least 8 chars long'
-      //   }
-      //   return
-      // }
       this.buttonLoading = true
       this.showBanner = false
       this.error = null
