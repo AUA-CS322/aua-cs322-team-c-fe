@@ -34,8 +34,22 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
-
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          user: false
+        }
+      }
+    },
+    token: {
+        prefix: 'token.'
+    },
+    redirect: false
+  },
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     customVariables: ['~/assets/variables.scss'],

@@ -6,6 +6,7 @@
     >
       <v-toolbar-title v-text="`Sign In Page`" />
       <v-spacer />
+      <v-btn @click="$store.dispatch('logout')" v-if="user" text>Log Out</v-btn>
     </v-app-bar>
     <v-main class="mainContainer">
       <v-container class="contentContainer">
@@ -19,6 +20,11 @@
 export default {
   data () {
     return {
+    }
+  },
+  computed: {
+    user () {
+      return this.$store.state.general.user
     }
   }
 }
