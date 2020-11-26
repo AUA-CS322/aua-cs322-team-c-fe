@@ -8,7 +8,10 @@ const defaultState = {
 
 const state = () => ({
   user: null,
-  pageTitle: null
+  pageTitle: null,
+  chart: null,
+  searchItems: [],
+  searchLoading: false
 })
 
 const inBrowser = typeof window !== 'undefined'

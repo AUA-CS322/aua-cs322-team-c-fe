@@ -30,6 +30,50 @@ export default {
     })
   },
 
+  search ({ commit }, payload) {
+    if (this.$auth.$state['token.local']) {
+      commit('setSearchLoading', true)
+      return new Promise((resolve, reject) => {
+        this.$axios.$get(`http://localhost:8080/search?query=${payload}`, {
+          headers: {
+            'Authorization': `${this.$auth.$state['token.local']}`
+          }
+        })
+        .then(response => {
+          commit('setSearchItems', response)
+          commit('setSearchLoading', false)
+        })
+        .catch(error => {
+          dispatch('logout')
+          reject(error.response.data)
+          commit('setSearchLoading', false)
+          return
+        })
+      })
+    }
+    dispatch('logout')
+  },
+
+  getChart ({ commit }, payload) {
+    if (this.$auth.$state['token.local']) {
+      return new Promise((resolve, reject) => {
+        this.$axios.$get(`http://localhost:8080/org-chart/${payload.username}`, {
+          headers: {
+            'Authorization': `${this.$auth.$state['token.local']}`
+          }
+        })
+        .then(response => {
+
+          commit('setChart', response)
+        })
+        .catch(error => {
+          reject(error.response.data)
+        })
+      })
+    }
+    dispatch('logout')
+  },
+
   // LOGOUT FUNCTION
   logout ({ commit }, payload) {
     this.$auth.logout()
