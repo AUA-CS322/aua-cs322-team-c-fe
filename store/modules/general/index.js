@@ -1,15 +1,15 @@
-import actions from './actions'
-import getters from './getters'
-import mutations from './mutations'
+import actions from "./actions";
+import getters from "./getters";
+import mutations from "./mutations";
 // import state from './state'
 
-const defaultState = {
-}
+const defaultState = {};
 
 const state = () => ({
-})
+  user: null,
+});
 
-const inBrowser = typeof window !== 'undefined'
+const inBrowser = typeof window !== "undefined";
 // if in browser, use pre-fetched state injected by SSR
 // const state = (inBrowser && window.__INITIAL_STATE__) ? window.__INITIAL_STATE__.page : defaultState
 
@@ -17,5 +17,5 @@ export default {
   state,
   actions,
   mutations,
-  getters
-}
+  getters,
+};
