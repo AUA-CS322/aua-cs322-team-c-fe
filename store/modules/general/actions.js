@@ -1,5 +1,3 @@
-import Cookies from 'vue-cookies'
-
 export default {
   // NUXT JS CALLS THIS FUNCTION ON APP INIT
   // USED TO CHECK USER'S ACCESS TOKEN
@@ -30,6 +28,49 @@ export default {
     })
   },
 
+  search ({ commit, dispatch }, payload) {
+    if (this.$auth.$state['token.local']) {
+      commit('setSearchLoading', true)
+      return new Promise((resolve, reject) => {
+        this.$axios.$get(`http://localhost:8080/search?query=${payload}`, {
+          headers: {
+            'Authorization': `${this.$auth.$state['token.local']}`
+          }
+        })
+        .then(response => {
+          commit('setSearchItems', response)
+          commit('setSearchLoading', false)
+        })
+        .catch(error => {
+          dispatch('logout')
+          reject(error.response.data)
+          commit('setSearchLoading', false)
+          return
+        })
+      })
+    }
+    dispatch('logout')
+  },
+
+  getChart ({ commit }, payload) {
+    if (this.$auth.$state['token.local']) {
+      return new Promise((resolve, reject) => {
+        this.$axios.$get(`http://localhost:8080/org-chart/${payload.username}`, {
+          headers: {
+            'Authorization': `${this.$auth.$state['token.local']}`
+          }
+        })
+        .then(response => {
+          commit('setChart', response)
+        })
+        .catch(error => {
+          reject(error.response.data)
+        })
+      })
+    }
+    dispatch('logout')
+  },
+
   // LOGOUT FUNCTION
   logout ({ commit }, payload) {
     this.$auth.logout()
@@ -40,6 +81,22 @@ export default {
   // ACTION FUNCTION TO CALL setPageTitle MUTATION FROM PAGES
   setPageTitle ({ commit }, payload) {
     commit('setPageTitle', payload)
+  },
+
+  async getProfile ({ commit, dispatch }, payload) {
+    if (this.$auth.$state['token.local']) {
+      let response = await this.$axios.$get(`http://localhost:8080/users/${payload && payload.username}`, {
+        headers: {
+          'Authorization': `${this.$auth.$state['token.local']}`
+        }
+      })
+      .then(response => {
+        commit('setProfile', response)
+      })
+      .catch(error => {
+        dispatch('logout')
+      })
+    }
   },
 
   // CHECK IF USER'S TOKEN IS STILL VALID
