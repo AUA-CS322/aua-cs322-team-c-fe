@@ -9,10 +9,10 @@ export default {
   // LOGIN USER FUNCTION
   onLogin ({ commit }, payload) {
     return new Promise((resolve, reject) => {
-      this.$axios.$post('http://localhost:8080/authenticate', payload)
+      this.$axios.$post('https://team-c-server-ns2svqdtya-ew.a.run.app/authenticate', payload)
       .then(response => {
         this.$auth.setUserToken(response.token)
-        return this.$axios.$get('http://localhost:8080/users/user', {
+        return this.$axios.$get('https://team-c-server-ns2svqdtya-ew.a.run.app/users/user', {
           headers: {
             'Authorization': `Bearer ${response.token}`
           }
@@ -32,7 +32,7 @@ export default {
     if (this.$auth.$state['token.local']) {
       commit('setSearchLoading', true)
       return new Promise((resolve, reject) => {
-        this.$axios.$get(`http://localhost:8080/search?query=${payload}`, {
+        this.$axios.$get(`https://team-c-server-ns2svqdtya-ew.a.run.app/search?query=${payload}`, {
           headers: {
             'Authorization': `${this.$auth.$state['token.local']}`
           }
@@ -55,7 +55,7 @@ export default {
   getChart ({ commit }, payload) {
     if (this.$auth.$state['token.local']) {
       return new Promise((resolve, reject) => {
-        this.$axios.$get(`http://localhost:8080/org-chart/${payload.username}`, {
+        this.$axios.$get(`https://team-c-server-ns2svqdtya-ew.a.run.app/org-chart/${payload.username}`, {
           headers: {
             'Authorization': `${this.$auth.$state['token.local']}`
           }
@@ -85,7 +85,7 @@ export default {
 
   async getProfile ({ commit, dispatch }, payload) {
     if (this.$auth.$state['token.local']) {
-      let response = await this.$axios.$get(`http://localhost:8080/users/${payload && payload.username}`, {
+      let response = await this.$axios.$get(`https://team-c-server-ns2svqdtya-ew.a.run.app/users/${payload && payload.username}`, {
         headers: {
           'Authorization': `${this.$auth.$state['token.local']}`
         }
@@ -102,7 +102,7 @@ export default {
   // CHECK IF USER'S TOKEN IS STILL VALID
   async getUser ({ commit, dispatch }, payload) {
     if (this.$auth.$state['token.local']) {
-      let response = await this.$axios.$get('http://localhost:8080/users/user', {
+      let response = await this.$axios.$get('https://team-c-server-ns2svqdtya-ew.a.run.app/users/user', {
         headers: {
           'Authorization': `${this.$auth.$state['token.local']}`
         }
