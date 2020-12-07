@@ -2,8 +2,7 @@
   <div>
     <v-row>
       <v-col cols="4" class="text-center">
-        <v-btn text to="/profile"> <- Back yo My Profile</v-btn>
-        <v-card class="customCard" v-if="profile">
+        <v-card class="customCard" v-if="user">
           <v-container>
             <v-row>
               <v-col>
@@ -11,21 +10,20 @@
                 size="200"
                 class="grey"
                 >
-                <img style="height: 100%; width: 100%;" :src="profile.photoUrl" alt="Profile Picture">
+                <img style="height: 100%; width: 100%;" :src="user && user.photoUrl" alt="Profile Picture">
               </v-avatar>
-              <h1>{{ profile.firstName }} {{ profile.lastName }}</h1>
-              <h2>{{ profile.email }}</h2>
-              <p>{{ profile.position }}</p>
-              <p>{{ profile.department }}</p>
-              <p>{{ profile.location }}</p>
-              <p>{{ profile.phone }}</p>
+              <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+              <h2>{{ user.email }}</h2>
+              <p>{{ user.position }}</p>
+              <p>{{ user.department }}</p>
+              <p>{{ user.location }}</p>
+              <p>{{ user.phone }}</p>
             </v-col>
           </v-row>
         </v-container>
       </v-card>
     </v-col>
-
-    <v-col cols="8" v-if="chart">
+    <v-col cols="8">
       <v-row>
         <v-col cols="12">
           <v-autocomplete
@@ -61,7 +59,7 @@
         </v-col>
 
         <v-col cols="12">
-          <h3>{{ profile.username }}</h3>
+          <h3>Me</h3>
         </v-col>
         <v-col cols="12" class="text-center">
           <v-card class="personCard">
@@ -69,10 +67,10 @@
               size="70"
               class="grey"
               >
-              <img style="height: 100%; width: 100%;" :src="profile.photoUrl" alt="Profile Picture">
+              <img style="height: 100%; width: 100%;" :src="user.photoUrl" alt="Profile Picture">
             </v-avatar>
-            <h2>{{ profile.firstName }} {{ profile.lastName }}</h2>
-            <p>{{ profile.position }}</p>
+            <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+            <p>{{ user.position }}</p>
           </v-card>
         </v-col>
 
@@ -101,13 +99,10 @@
 export default {
   head () {
     return {
-      title: `${this.profile && this.profile.firstName} | Profile`
+      title: `${this.user && this.user.firstName} | Profile`
     }
   },
   middleware: 'userExists',
-  async fetch ({store, route, params}) {
-    await store.dispatch('getProfile', { username: params.username })
-  },
   data () {
     return {
       message: 'Login Page',
@@ -118,8 +113,8 @@ export default {
   },
   beforeMount () {
     // SETTING PAGE TITLE
-    this.$store.dispatch('setPageTitle', `<b>${this.profile.firstName}</b> Profile`)
-    this.$store.dispatch('getChart', { username: this.$route.params.username })
+    this.$store.dispatch('getChart', { username: this.user && this.user.username || 'member14' })
+    this.$store.dispatch('setPageTitle', `<b>${this.user.firstName}</b> Profile`)
   },
   methods: {
     openPersonCard (person) {
@@ -133,13 +128,13 @@ export default {
   watch: {
     searchModel (val) {
       if (val) {
-        this.$router.push(`/profile/${val.username}`)
+        this.openPersonCard(val)
       }
     }
   },
   computed: {
-    profile () {
-      return this.$store.state.general.profile
+    user () {
+      return this.$store.state.general.user
     },
     chart () {
       return this.$store.state.general.chart
