@@ -16,6 +16,13 @@ export default {
   beforeMount () {
   },
   methods: {
+    openPersonCard (person) {
+      this.$router.push(`/profile/${person.username}`)
+    },
+    onSearchInput (value) {
+      this.searchValue = value
+      this.$store.dispatch('search', value)
+    }
   },
   watch: {
   },

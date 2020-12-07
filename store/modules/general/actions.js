@@ -30,5 +30,20 @@ export default {
     })
   },
 
-
+async getProfile ({ commit, dispatch }, payload) {
+    if (this.$auth.$state['token.local']) {
+      let response = await this.$axios.$get(`http://localhost:8080/users/${payload && payload.username}`, {
+        headers: {
+          'Authorization': `${this.$auth.$state['token.local']}`
+        }
+      })
+      .then(response => {
+        commit('setProfile', response)
+      })
+      .catch(error => {
+        dispatch('logout')
+      })
+    }
+  }
 }
+
