@@ -7,7 +7,9 @@ const defaultState = {};
 
 const state = () => ({
   user: null,
-  profile: null
+  profile: null,
+  searchItems: [],
+  searchLoading: false
 });
 
 const inBrowser = typeof window !== "undefined";

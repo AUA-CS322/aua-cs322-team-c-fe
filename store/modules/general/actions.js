@@ -30,6 +30,30 @@ export default {
     })
   },
 
+  search ({ commit, dispatch }, payload) {
+    if (this.$auth.$state['token.local']) {
+      commit('setSearchLoading', true)
+      return new Promise((resolve, reject) => {
+        this.$axios.$get(`http://localhost:8080/search?query=${payload}`, {
+          headers: {
+            'Authorization': `${this.$auth.$state['token.local']}`
+          }
+        })
+        .then(response => {
+          commit('setSearchItems', response)
+          commit('setSearchLoading', false)
+        })
+        .catch(error => {
+          dispatch('logout')
+          reject(error.response.data)
+          commit('setSearchLoading', false)
+          return
+        })
+      })
+    }
+    dispatch('logout')
+  },
+
 async getProfile ({ commit, dispatch }, payload) {
     if (this.$auth.$state['token.local']) {
       let response = await this.$axios.$get(`http://localhost:8080/users/${payload && payload.username}`, {
