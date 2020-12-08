@@ -122,10 +122,12 @@ export default {
     },
     onSearchInput (value) {
       this.searchValue = value
-      this.$store.dispatch('search', value)
     }
   },
   watch: {
+    searchValue (val) {
+      this.$store.dispatch('search', val)
+    },
     searchModel (val) {
       if (val) {
         this.openPersonCard(val)

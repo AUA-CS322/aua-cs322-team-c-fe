@@ -126,11 +126,15 @@ export default {
       this.$router.push(`/profile/${person.username}`)
     },
     onSearchInput (value) {
-      this.searchValue = value
-      this.$store.dispatch('search', value)
+      if (value) {
+        this.searchValue = value
+      }
     }
   },
   watch: {
+    searchValue (val) {
+      this.$store.dispatch('search', val)
+    },
     searchModel (val) {
       if (val) {
         this.$router.push(`/profile/${val.username}`)
